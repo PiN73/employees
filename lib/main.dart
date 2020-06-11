@@ -1,7 +1,20 @@
+import 'package:employees/data/repository.dart';
+import 'package:employees/pages/employees_page.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  // support only russian
+  Intl.defaultLocale = 'ru-RU';
+  await initializeDateFormatting('ru-RU');
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => Repository(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,22 +25,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        pageTransitionsTheme: PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: ZoomPageTransitionsBuilder(),
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          },
+        ),
       ),
-      home: MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Сотрудники'),
-      ),
-      body: Center(
-        child: Text('Hi'),
-      ),
+      home: EmployeesPage(),
     );
   }
 }
