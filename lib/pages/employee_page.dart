@@ -1,14 +1,30 @@
+import 'package:employees/data/repository.dart';
 import 'package:employees/models/child.dart';
 import 'package:employees/models/employee.dart';
+import 'package:employees/pages/add_child_page.dart';
 import 'package:employees/strings.dart';
 import 'package:employees/utils.dart';
 import 'package:employees/widgets/user_info.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class EmployeePage extends StatelessWidget {
+  final String id;
+
+  const EmployeePage({@required this.id});
+
+  @override
+  Widget build(BuildContext context) {
+    return _EmployeePage(
+      data: context.select((Repository r) => r.getEmployee(id)),
+    );
+  }
+}
+
+class _EmployeePage extends StatelessWidget {
   final Employee data;
 
-  const EmployeePage({@required this.data});
+  const _EmployeePage({@required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +62,22 @@ class EmployeePage extends StatelessWidget {
             ),
           ),
           _ChildrenList(data: data.children),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 16,
+              ),
+              child: _AddChild(data: data),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: SizedBox(height: 16),
+          ),
         ],
       ),
     );
   }
 }
-
 
 class _ChildrenList extends StatelessWidget {
   final List<Child> data;
@@ -90,6 +116,33 @@ class _Child extends StatelessWidget {
       subtitle: Text(
         Strings.agesCount(data.birthDate.getAge()),
       ),
+    );
+  }
+}
+
+class _AddChild extends StatelessWidget {
+  final Employee data;
+
+  const _AddChild({@required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return RaisedButton(
+      child: Text('Добавить ребёнка'),
+      onPressed: () => Navigator.of(context)
+          .push<bool>(
+        MaterialPageRoute(
+          builder: (context) => AddChildPage(employeeId: data.id),
+        ),
+      ).then((wasSaved) {
+        if (wasSaved == true) {
+          Scaffold.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Ребёнок добавлен'),
+            ),
+          );
+        }
+      }),
     );
   }
 }

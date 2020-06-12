@@ -1,23 +1,30 @@
+import 'package:dataclass/dataclass.dart';
 import 'package:employees/models/child.dart';
 import 'package:employees/models/user.dart';
+import 'package:employees/utils.dart';
 import 'package:flutter/foundation.dart';
 
-@immutable
-class Employee extends User {
+part 'employee.g.dart';
+
+@dataClass
+class Employee extends _$Employee with User {
+  final String id;
+  final String lastName;
+  final String firstName;
+  final String middleName;
+  final DateTime birthDate;
   final String position;
+  @Collection(deepEquality: true)
   final List<Child> children;
 
   Employee({
-    @required String lastName,
-    @required String firstName,
-    @required String middleName,
-    @required DateTime birthDate,
+    String id,
+    @required this.lastName,
+    @required this.firstName,
+    @required this.middleName,
+    @required this.birthDate,
     @required this.position,
-    this.children = const [],
-  }) : super(
-    lastName: lastName,
-    firstName: firstName,
-    middleName: middleName,
-    birthDate: birthDate,
-  );
+    List<Child> children,
+  })  : this.id = id ?? uuid.v4(),
+        this.children = children ?? [];
 }

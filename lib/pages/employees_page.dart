@@ -86,7 +86,7 @@ class _Employee extends StatelessWidget {
       ),
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => EmployeePage(data: data),
+          builder: (context) => EmployeePage(id: data.id),
         ),
       ),
     );

@@ -2,17 +2,11 @@ import 'package:flutter/foundation.dart';
 
 @immutable
 abstract class User {
-  final String lastName;
-  final String firstName;
-  final String middleName;
-  final DateTime birthDate;
-
-  User({
-    @required this.lastName,
-    @required this.firstName,
-    @required this.middleName,
-    @required this.birthDate,
-  });
+  String get id;
+  String get lastName;
+  String get firstName;
+  String get middleName;
+  DateTime get birthDate;
 
   String get fullName => '$lastName $firstName $middleName';
 

@@ -1,17 +1,23 @@
+import 'package:dataclass/dataclass.dart';
 import 'package:employees/models/user.dart';
+import 'package:employees/utils.dart';
 import 'package:flutter/foundation.dart';
 
-@immutable
-class Child extends User {
+part 'child.g.dart';
+
+@dataClass
+class Child extends _$Child with User {
+  final String id;
+  final String lastName;
+  final String firstName;
+  final String middleName;
+  final DateTime birthDate;
+
   Child({
-    @required String lastName,
-    @required String firstName,
-    @required String middleName,
-    @required DateTime birthDate,
-  }) : super(
-    lastName: lastName,
-    firstName: firstName,
-    middleName: middleName,
-    birthDate: birthDate,
-  );
+    String id,
+    @required this.lastName,
+    @required this.firstName,
+    @required this.middleName,
+    @required this.birthDate,
+  })  : this.id = id ?? uuid.v4();
 }
