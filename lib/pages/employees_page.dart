@@ -2,6 +2,8 @@ import 'package:employees/data/db.dart';
 import 'package:employees/data/repository.dart';
 import 'package:employees/pages/add_employee_page.dart';
 import 'package:employees/pages/employee_page.dart';
+import 'package:employees/strings.dart';
+import 'package:employees/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +17,7 @@ class EmployeesPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Сотрудники'),
       ),
-      body: StreamBuilder<List<Employee>>(
+      body: StreamBuilder<List<EmployeeWithChildrenCount>>(
         stream: context.watch<Repository>().employees,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -55,7 +57,7 @@ class _AddEmployeeButton extends StatelessWidget {
 
 
 class _EmployeesList extends StatelessWidget {
-  final List<Employee> data;
+  final List<EmployeeWithChildrenCount> data;
 
   const _EmployeesList({@required this.data});
 
@@ -85,7 +87,7 @@ class _EmployeesList extends StatelessWidget {
 }
 
 class _Employee extends StatelessWidget {
-  final Employee data;
+  final EmployeeWithChildrenCount data;
 
   const _Employee({@required this.data});
 
@@ -93,10 +95,10 @@ class _Employee extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: CircleAvatar(
-        child: Text(data.lastName[0]),
+        child: Text(data.employee.lastName[0]),
       ),
       title: Text(
-        data.fullName,
+        data.employee.fullName,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
@@ -107,17 +109,17 @@ class _Employee extends StatelessWidget {
       ),
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => EmployeePage(id: data.id),
+          builder: (context) => EmployeePage(id: data.employee.id),
         ),
       ),
     );
   }
 
   String get subtitleText {
-    /*if (data.children.isNotEmpty) {
-      final children = Strings.childrenCount(data.children.length).capitalize();
-      return children + '  |  ' + data.position;
-    }*/
-    return data.position;
+    if (data.childrenCount != 0) {
+      final children = Strings.childrenCount(data.childrenCount).capitalize();
+      return children + '  |  ' + data.employee.position;
+    }
+    return data.employee.position;
   }
 }

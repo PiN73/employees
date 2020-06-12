@@ -16,6 +16,10 @@ extension DateTimeExtensions on DateTime {
   }
 }
 
+extension IterableExtensions<T> on Iterable<T> {
+  List<U> mapToList<U>(U f(T t)) => map(f).toList();
+}
+
 extension StringExtensions on String {
   String capitalize() => toBeginningOfSentenceCase(this);
 }

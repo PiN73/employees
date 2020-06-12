@@ -1,4 +1,6 @@
 import 'package:employees/models/user.dart';
+import 'package:employees/utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:moor_ffi/moor_ffi.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
@@ -44,6 +46,29 @@ class MyDatabase extends _$MyDatabase {
 
   Stream<List<Employee>> get allEmployees => select(employees).watch();
 
+  Stream<List<EmployeeWithChildrenCount>> get allEmployeesWithChildrenCount {
+    final childrenCount = children.id.count();
+
+    final query = select(employees).join([
+      innerJoin(
+        children,
+        children.parentId.equalsExp(employees.id),
+        useColumns: false,
+      )
+    ])
+      ..addColumns([childrenCount])
+      ..groupBy([employees.id]);
+
+    return query.watch().map(
+      (rows) => rows.mapToList(
+        (row) => EmployeeWithChildrenCount(
+          row.readTable(employees),
+          row.read(childrenCount),
+        ),
+      ),
+    );
+  }
+
   Stream<Employee> getEmployeeById(int id) {
     return (select(employees)..where((e) => e.id.equals(id))).watchSingle();
   }
@@ -59,4 +84,12 @@ class MyDatabase extends _$MyDatabase {
   Stream<List<Child>> getChildrenByEmployeeId(int id) {
     return (select(children)..where((e) => e.parentId.equals(id))).watch();
   }
+}
+
+@immutable
+class EmployeeWithChildrenCount {
+  final Employee employee;
+  final int childrenCount;
+
+  EmployeeWithChildrenCount(this.employee, this.childrenCount);
 }

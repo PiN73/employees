@@ -3,7 +3,8 @@ import 'package:employees/data/db.dart';
 class Repository {
   final _db = MyDatabase();
 
-  Stream<List<Employee>> get employees => _db.allEmployees;
+  Stream<List<EmployeeWithChildrenCount>> get employees =>
+      _db.allEmployeesWithChildrenCount;
 
   Stream<Employee> employee(int id) => _db.getEmployeeById(id);
 
