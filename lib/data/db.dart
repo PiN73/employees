@@ -50,7 +50,7 @@ class MyDatabase extends _$MyDatabase {
     final childrenCount = children.id.count();
 
     final query = select(employees).join([
-      innerJoin(
+      leftOuterJoin( // innerJoin omits childfree
         children,
         children.parentId.equalsExp(employees.id),
         useColumns: false,
