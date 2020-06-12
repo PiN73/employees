@@ -29,6 +29,12 @@ class EmployeePage extends StatelessWidget {
           ),
           UserInfo(data: data),
           SliverToBoxAdapter(
+            child: DataTile(
+              label: 'Должность: ',
+              value: data.position,
+            ),
+          ),
+          SliverToBoxAdapter(
             child: ListTile(
               title: Text(
                 data.children.isNotEmpty

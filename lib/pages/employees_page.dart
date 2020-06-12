@@ -1,5 +1,6 @@
 import 'package:employees/data/repository.dart';
 import 'package:employees/models/employee.dart';
+import 'package:employees/pages/add_employee_page.dart';
 import 'package:employees/pages/employee_page.dart';
 import 'package:employees/strings.dart';
 import 'package:employees/utils.dart';
@@ -19,9 +20,33 @@ class EmployeesPage extends StatelessWidget {
       body: _EmployeesList(
         data: context.select((Repository r) => r.employees),
       ),
+      floatingActionButton: _AddEmployeeButton(),
     );
   }
 }
+
+class _AddEmployeeButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      child: Icon(Icons.add),
+      onPressed: () => Navigator.of(context).push<bool>(
+        MaterialPageRoute(
+          builder: (context) => AddEmployeePage(),
+        ),
+      ).then((wasSaved) {
+        if (wasSaved == true) {
+          Scaffold.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Сотрудник добавлен'),
+            ),
+          );
+        }
+      }),
+    );
+  }
+}
+
 
 class _EmployeesList extends StatelessWidget {
   final List<Employee> data;

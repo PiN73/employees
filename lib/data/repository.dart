@@ -9,4 +9,9 @@ class Repository with ChangeNotifier {
 
   UnmodifiableListView<Employee> get employees =>
       UnmodifiableListView(_employees);
+
+  void addEmployee(Employee data) {
+    _employees.insert(0, data);
+    notifyListeners();
+  }
 }

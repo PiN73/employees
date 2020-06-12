@@ -13,19 +13,19 @@ class UserInfo extends StatelessWidget {
     return SliverList(
       delegate: SliverChildListDelegate(
         [
-          _DataTile(
+          DataTile(
             label: 'Фамилия: ',
             value: data.lastName,
           ),
-          _DataTile(
+          DataTile(
             label: 'Имя: ',
             value: data.firstName,
           ),
-          _DataTile(
+          DataTile(
             label: 'Отчество: ',
             value: data.middleName,
           ),
-          _DataTile(
+          DataTile(
             label: 'Дата рождения: ',
             value: '${data.birthDate.format()} (${Strings.agesCount(data.birthDate.getAge())})',
           ),
@@ -35,11 +35,11 @@ class UserInfo extends StatelessWidget {
   }
 }
 
-class _DataTile extends StatelessWidget {
+class DataTile extends StatelessWidget {
   final String label;
   final String value;
 
-  const _DataTile({
+  const DataTile({
     @required this.label,
     @required this.value,
   });
