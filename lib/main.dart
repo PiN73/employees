@@ -10,7 +10,7 @@ void main() async {
   Intl.defaultLocale = 'ru-RU';
   await initializeDateFormatting('ru-RU');
   runApp(
-    ChangeNotifierProvider(
+    Provider(
       create: (context) => Repository(),
       child: MyApp(),
     ),

@@ -1,6 +1,5 @@
+import 'package:employees/data/db.dart';
 import 'package:employees/data/repository.dart';
-import 'package:employees/models/child.dart';
-import 'package:employees/models/employee.dart';
 import 'package:employees/pages/add_child_page.dart';
 import 'package:employees/strings.dart';
 import 'package:employees/utils.dart';
@@ -9,14 +8,25 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class EmployeePage extends StatelessWidget {
-  final String id;
+  final int id;
 
   const EmployeePage({@required this.id});
 
   @override
   Widget build(BuildContext context) {
-    return _EmployeePage(
-      data: context.select((Repository r) => r.getEmployee(id)),
+    return StreamBuilder<Employee>(
+      stream: context.watch<Repository>().employee(id),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: LinearProgressIndicator(),
+          );
+        }
+        return _EmployeePage(
+          data: snapshot.data,
+        );
+      }
     );
   }
 }
@@ -50,7 +60,8 @@ class _EmployeePage extends StatelessWidget {
               value: data.position,
             ),
           ),
-          SliverToBoxAdapter(
+          // TODO
+          /*SliverToBoxAdapter(
             child: ListTile(
               title: Text(
                 data.children.isNotEmpty
@@ -72,7 +83,7 @@ class _EmployeePage extends StatelessWidget {
           ),
           SliverToBoxAdapter(
             child: SizedBox(height: 16),
-          ),
+          ),*/
         ],
       ),
     );

@@ -1,13 +1,9 @@
-import 'package:employees/data/repository.dart';
-import 'package:employees/models/child.dart';
 import 'package:employees/widgets/date_picker_form_field.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 // pops with true if child has been added
 class AddChildPage extends StatefulWidget {
-  final String employeeId;
+  final int employeeId;
 
   const AddChildPage({@required this.employeeId});
 
@@ -120,7 +116,8 @@ class _AddChildPageState extends State<AddChildPage> {
                   onPressed: () {
                     if (formKey.currentState.validate()) {
                       formKey.currentState.save();
-                      final child = Child(
+                      // TODO
+                      /*final child = Child(
                         lastName: lastName,
                         firstName: firstName,
                         middleName: middleName,
@@ -128,7 +125,7 @@ class _AddChildPageState extends State<AddChildPage> {
                       );
                       context.read<Repository>()
                           .addEmployeeChild(widget.employeeId, child);
-                      Navigator.of(context).pop(true);
+                      Navigator.of(context).pop(true);*/
                     }
                   },
                 ),

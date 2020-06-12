@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 
 @immutable
 abstract class User {
-  String get id;
   String get lastName;
   String get firstName;
   String get middleName;

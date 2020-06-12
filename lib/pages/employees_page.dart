@@ -1,9 +1,7 @@
+import 'package:employees/data/db.dart';
 import 'package:employees/data/repository.dart';
-import 'package:employees/models/employee.dart';
 import 'package:employees/pages/add_employee_page.dart';
 import 'package:employees/pages/employee_page.dart';
-import 'package:employees/strings.dart';
-import 'package:employees/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,8 +15,16 @@ class EmployeesPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Сотрудники'),
       ),
-      body: _EmployeesList(
-        data: context.select((Repository r) => r.employees),
+      body: StreamBuilder<List<Employee>>(
+        stream: context.watch<Repository>().employees,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return LinearProgressIndicator();
+          }
+          return _EmployeesList(
+            data: snapshot.data,
+          );
+        }
       ),
       floatingActionButton: _AddEmployeeButton(),
     );
@@ -55,6 +61,21 @@ class _EmployeesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (data.isEmpty) {
+      return Padding(
+        padding: EdgeInsets.all(16),
+        child: Center(
+          child: Text(
+            'Список сотрудников пуст\nДля добавления нажмите кнопку +',
+            style: Theme.of(context).textTheme.subtitle1.copyWith(
+              height: 1.5,
+              color: Colors.grey,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
     return ListView.separated(
       itemCount: data.length,
       itemBuilder: (context, i) => _Employee(data: data[i]),
@@ -93,10 +114,10 @@ class _Employee extends StatelessWidget {
   }
 
   String get subtitleText {
-    if (data.children.isNotEmpty) {
+    /*if (data.children.isNotEmpty) {
       final children = Strings.childrenCount(data.children.length).capitalize();
       return children + '  |  ' + data.position;
-    }
+    }*/
     return data.position;
   }
 }

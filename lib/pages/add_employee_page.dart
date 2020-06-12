@@ -1,5 +1,5 @@
+import 'package:employees/data/db.dart';
 import 'package:employees/data/repository.dart';
-import 'package:employees/models/employee.dart';
 import 'package:employees/widgets/date_picker_form_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -132,7 +132,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                   onPressed: () {
                     if (formKey.currentState.validate()) {
                       formKey.currentState.save();
-                      final employee = Employee(
+                      final employee = EmployeesCompanion.insert(
                         lastName: lastName,
                         firstName: firstName,
                         middleName: middleName,

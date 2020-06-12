@@ -1,5 +1,4 @@
 import 'package:intl/intl.dart';
-import 'package:uuid/uuid.dart';
 
 extension DateTimeExtensions on DateTime {
   String format() => DateFormat.yMd().format(this);
@@ -20,5 +19,3 @@ extension DateTimeExtensions on DateTime {
 extension StringExtensions on String {
   String capitalize() => toBeginningOfSentenceCase(this);
 }
-
-final uuid = Uuid();
