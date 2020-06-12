@@ -51,4 +51,12 @@ class MyDatabase extends _$MyDatabase {
   Future<int> addEmployee(EmployeesCompanion entry) {
     return into(employees).insert(entry);
   }
+
+  Future<int> addChild(ChildrenCompanion entry) {
+    return into(children).insert(entry);
+  }
+
+  Stream<List<Child>> getChildrenByEmployeeId(int id) {
+    return (select(children)..where((e) => e.parentId.equals(id))).watch();
+  }
 }

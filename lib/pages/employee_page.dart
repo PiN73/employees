@@ -14,17 +14,24 @@ class EmployeePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final repository = context.watch<Repository>();
     return StreamBuilder<Employee>(
-      stream: context.watch<Repository>().employee(id),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Scaffold(
-            appBar: AppBar(),
-            body: LinearProgressIndicator(),
-          );
-        }
-        return _EmployeePage(
-          data: snapshot.data,
+      stream: repository.employee(id),
+      builder: (context, employeeSnapshot) {
+        return StreamBuilder(
+          stream: repository.employeeChildren(id),
+          builder: (context, childrenSnapshot) {
+            if (!employeeSnapshot.hasData || !childrenSnapshot.hasData) {
+              return Scaffold(
+                appBar: AppBar(),
+                body: LinearProgressIndicator(),
+              );
+            }
+            return _EmployeePage(
+              employee: employeeSnapshot.data,
+              children: childrenSnapshot.data,
+            );
+          }
         );
       }
     );
@@ -32,15 +39,19 @@ class EmployeePage extends StatelessWidget {
 }
 
 class _EmployeePage extends StatelessWidget {
-  final Employee data;
+  final Employee employee;
+  final List<Child> children;
 
-  const _EmployeePage({@required this.data});
+  const _EmployeePage({
+    @required this.employee,
+    @required this.children,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(data.initials),
+        title: Text(employee.initials),
       ),
       body: CustomScrollView(
         slivers: [
@@ -53,37 +64,36 @@ class _EmployeePage extends StatelessWidget {
               ),
             ),
           ),
-          UserInfo(data: data),
+          UserInfo(data: employee),
           SliverToBoxAdapter(
             child: DataTile(
               label: 'Должность: ',
-              value: data.position,
+              value: employee.position,
             ),
           ),
-          // TODO
-          /*SliverToBoxAdapter(
+          SliverToBoxAdapter(
             child: ListTile(
               title: Text(
-                data.children.isNotEmpty
-                  ? 'Дети (${data.children.length})'
+                children.isNotEmpty
+                  ? 'Дети (${children.length})'
                   : 'Детей нет',
                 style: Theme.of(context).textTheme.headline6,
                 textAlign: TextAlign.center,
               ),
             ),
           ),
-          _ChildrenList(data: data.children),
+          _ChildrenList(data: children),
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: 16,
               ),
-              child: _AddChild(data: data),
+              child: _AddChild(data: employee),
             ),
           ),
           SliverToBoxAdapter(
             child: SizedBox(height: 16),
-          ),*/
+          ),
         ],
       ),
     );

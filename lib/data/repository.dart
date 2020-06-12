@@ -7,16 +7,12 @@ class Repository {
 
   Stream<Employee> employee(int id) => _db.getEmployeeById(id);
 
+  Stream<List<Child>> employeeChildren(int id) =>
+      _db.getChildrenByEmployeeId(id);
+
   Future<void> addEmployee(EmployeesCompanion entry) =>
       _db.addEmployee(entry);
 
-  // currently not thread safe
-  /*void addEmployeeChild(String employeeId, Child child) {
-    final i = _employees.indexWhere((it) => it.id == employeeId);
-    final employee = _employees[i];
-    _employees[i] = employee.copyWith(
-      children: [...employee.children, child],
-    );
-    notifyListeners();
-  }*/
+  Future<void> addEmployeeChild(ChildrenCompanion entry) =>
+      _db.addChild(entry);
 }
