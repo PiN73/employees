@@ -72,6 +72,14 @@ class MyDatabase extends _$MyDatabase {
   Stream<List<Child>> getChildrenByEmployeeId(int id) {
     return (select(children)..where((e) => e.parentId.equals(id))).watch();
   }
+
+  Future<void> clearAllData() {
+    return transaction(() async {
+      for (final table in allTables) {
+        await delete(table).go();
+      }
+    });
+  }
 }
 
 @immutable

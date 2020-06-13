@@ -13,22 +13,41 @@ class EmployeesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Сотрудники'),
-      ),
-      body: StreamBuilder<List<EmployeeWithChildrenCount>>(
-        stream: context.watch<Repository>().employees,
-        builder: (context, snapshot) {
+    return StreamBuilder<List<EmployeeWithChildrenCount>>(
+      stream: context.watch<Repository>().employees,
+      builder: (context, snapshot) => Scaffold(
+        appBar: AppBar(
+          title: Text('Сотрудники'),
+          actions: [
+            if (snapshot.hasData && snapshot.data.isNotEmpty)
+              Builder(
+                builder: (context) => PopupMenuButton<int>(
+                  icon: Icon(Icons.more_vert),
+                  padding: EdgeInsets.zero,
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 0,
+                      child: Text('Очистить данные'),
+                    ),
+                  ],
+                  onSelected: (i) {
+                    context.read<Repository>().clearAll();
+                    context.showSnack('Данные очищены');
+                  },
+                ),
+              ),
+          ],
+        ),
+        body: Builder(builder: (context) {
           if (!snapshot.hasData) {
             return LinearProgressIndicator();
           }
           return _EmployeesList(
             data: snapshot.data,
           );
-        }
+        }),
+        floatingActionButton: _AddEmployeeButton(),
       ),
-      floatingActionButton: _AddEmployeeButton(),
     );
   }
 }
@@ -59,13 +78,16 @@ class _EmployeesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (data.isEmpty) {
-      return _EmployeesEmptyList();
-    }
-    return ListView.separated(
-      itemCount: data.length,
-      itemBuilder: (context, i) => _Employee(data: data[i]),
-      separatorBuilder: (context, i) => Divider(height: 0, indent: 72),
+    return AnimatedSwitcher(
+      duration: Duration(milliseconds: 200),
+      switchInCurve: Curves.ease,
+      child: data.isEmpty
+          ? _EmployeesEmptyList()
+          : ListView.separated(
+              itemCount: data.length,
+              itemBuilder: (context, i) => _Employee(data: data[i]),
+              separatorBuilder: (context, i) => Divider(height: 0, indent: 72),
+            ),
     );
   }
 }

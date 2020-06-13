@@ -19,4 +19,6 @@ class Repository {
       _db.addChild(entry);
 
   void addDummy() => addDummyData(_db);
+
+  void clearAll() => _db.clearAllData();
 }
