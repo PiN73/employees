@@ -1,16 +1,30 @@
 # employees
 
-A new Flutter application.
+Demo Flutter application. Works on Android and iOS
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+* Displaying list of employees
+* Adding new employee
+* Displaying employee details and children
+* Adding new child to an employee
+* Forms validation
+* Persisting data in local database
 
-A few resources to get you started if this is your first Flutter project:
+## Screenshots
+![](screenshots/0.webp)
+![](screenshots/1.webp)
+![](screenshots/2.webp)
+![](screenshots/3.webp)
+![](screenshots/4.webp)
+![](screenshots/5.webp)
+![](screenshots/6.webp)
+![](screenshots/7.webp)
+![](screenshots/8.webp)
+![](screenshots/9.webp)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Packages used
+* [provider](https://pub.dev/packages/provider) for accessing state
+* [intl](https://pub.dev/packages/intl) for dates and words formatting
+* [moor](https://pub.dev/packages/moor) and [moor_flutter](https://pub.dev/packages/moor_flutter) for working with local SQLite database
+* [build_runner](https://pub.dev/packages/build_runner) and [moor_generator](https://pub.dev/packages/moor_generator) for code generation
