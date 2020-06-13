@@ -24,3 +24,6 @@ Demo Flutter application. Works on Android and iOS
 * [intl](https://pub.dev/packages/intl) for dates and words formatting
 * [moor](https://pub.dev/packages/moor) and [moor_flutter](https://pub.dev/packages/moor_flutter) for working with local SQLite database
 * [build_runner](https://pub.dev/packages/build_runner) and [moor_generator](https://pub.dev/packages/moor_generator) for code generation
+
+## Compiled packages
+Ready-to-install apk files for Android can be found on [Releases](https://github.com/PiN73/employees/releases) tab
