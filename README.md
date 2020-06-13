@@ -12,16 +12,12 @@ Demo Flutter application. Works on Android and iOS
 * Persisting data in local database
 
 ## Screenshots
-![](screenshots/0.webp)
-![](screenshots/1.webp)
-![](screenshots/2.webp)
-![](screenshots/3.webp)
-![](screenshots/4.webp)
-![](screenshots/5.webp)
-![](screenshots/6.webp)
-![](screenshots/7.webp)
-![](screenshots/8.webp)
-![](screenshots/9.webp)
+
+<img src=screenshots/0.webp height=600> <img src=screenshots/1.webp height=600>
+<img src=screenshots/2.webp height=600> <img src=screenshots/3.webp height=600>
+<img src=screenshots/4.webp height=600> <img src=screenshots/5.webp height=600>
+<img src=screenshots/6.webp height=600> <img src=screenshots/7.webp height=600>
+<img src=screenshots/8.webp height=600> <img src=screenshots/9.webp height=600>
 
 ## Packages used
 * [provider](https://pub.dev/packages/provider) for accessing state
