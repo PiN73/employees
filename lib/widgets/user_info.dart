@@ -1,4 +1,4 @@
-import 'package:employees/models/user.dart';
+import 'package:employees/data/models.dart';
 import 'package:employees/strings.dart';
 import 'package:employees/utils.dart';
 import 'package:flutter/material.dart';

@@ -1,7 +1,9 @@
-import 'package:employees/data/db.dart';
+import 'package:employees/data/models.dart';
 import 'package:employees/data/repository.dart';
+import 'package:employees/material_utils.dart';
 import 'package:employees/widgets/date_picker_form_field.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:employees/widgets/dialogs.dart';
+import 'package:employees/widgets/form_status.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,29 +25,27 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
   @override
   Widget build(BuildContext context) {
     const double padding = 16;
-    return WillPopScope(
-      onWillPop: () => showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          content: Text('На странице есть несохранённые данные'),
-          actions: [
-            FlatButton(
-              child: Text('УДАЛИТЬ'),
-              onPressed: () => Navigator.of(context).pop(true),
-            ),
-            FlatButton(
-              child: Text('ПРОДОЛЖИТЬ'),
-              onPressed: () => Navigator.of(context).pop(false),
-            ),
-          ],
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Новый сотрудник'),
       ),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Новый сотрудник'),
-        ),
-        body: Form(
+      body: FormStatus(
+        builder: (context) => Form(
           key: formKey,
+          autovalidate: context.watch<FormStatusData>().wasValidated,
+          onChanged: () => context.read<FormStatusData>().onChange(),
+          onWillPop: () async {
+            if (!context.read<FormStatusData>().wasChanged) {
+              return true;
+            }
+            FocusScope.of(context).unfocus();
+            if (await confirmDiscard(context)) {
+              return true;
+            } else {
+              onSubmitPressed(context);
+              return false;
+            }
+          },
           child: ListView(
             children: [
               Padding(
@@ -124,25 +124,11 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                   onSaved: (value) => position = value,
                 ),
               ),
-              SizedBox(height: padding),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: padding),
+                padding: EdgeInsets.all(padding),
                 child: RaisedButton(
                   child: Text('Сохранить'),
-                  onPressed: () {
-                    if (formKey.currentState.validate()) {
-                      formKey.currentState.save();
-                      final employee = EmployeesCompanion.insert(
-                        lastName: lastName,
-                        firstName: firstName,
-                        middleName: middleName,
-                        birthDate: birthDate,
-                        position: position,
-                      );
-                      context.read<Repository>().addEmployee(employee);
-                      Navigator.of(context).pop(true);
-                    }
-                  },
+                  onPressed: () => onSubmitPressed(context),
                 ),
               ),
             ],
@@ -150,5 +136,23 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
         ),
       ),
     );
+  }
+
+  void onSubmitPressed(BuildContext context) {
+    if (formKey.currentState.validate()) {
+      formKey.currentState.save();
+      final employee = EmployeesCompanion.insert(
+        lastName: lastName,
+        firstName: firstName,
+        middleName: middleName,
+        birthDate: birthDate,
+        position: position,
+      );
+      context.read<Repository>().addEmployee(employee);
+      Navigator.of(context).pop(true);
+    } else {
+      context.showSnack('Пожалуйста, проверьте введённые данные');
+      context.read<FormStatusData>().onValidate();
+    }
   }
 }

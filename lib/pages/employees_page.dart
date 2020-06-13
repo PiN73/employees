@@ -1,10 +1,10 @@
-import 'package:employees/data/db.dart';
+import 'package:employees/data/models.dart';
 import 'package:employees/data/repository.dart';
+import 'package:employees/material_utils.dart';
 import 'package:employees/pages/add_employee_page.dart';
 import 'package:employees/pages/employee_page.dart';
 import 'package:employees/strings.dart';
 import 'package:employees/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -41,20 +41,16 @@ class _AddEmployeeButton extends StatelessWidget {
       onPressed: () => Navigator.of(context).push<bool>(
         MaterialPageRoute(
           builder: (context) => AddEmployeePage(),
+          fullscreenDialog: true,
         ),
       ).then((wasSaved) {
         if (wasSaved == true) {
-          Scaffold.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Сотрудник добавлен'),
-            ),
-          );
+          context.showSnack('Сотрудник добавлен');
         }
       }),
     );
   }
 }
-
 
 class _EmployeesList extends StatelessWidget {
   final List<EmployeeWithChildrenCount> data;
@@ -107,7 +103,7 @@ class _Employee extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
-      onTap: () => Navigator.of(context).push(
+      onTap: () => Navigator.of(context).push<void>(
         MaterialPageRoute(
           builder: (context) => EmployeePage(id: data.employee.id),
         ),

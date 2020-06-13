@@ -1,3 +1,11 @@
+export 'db.dart'
+    show
+        Employee,
+        EmployeeWithChildrenCount,
+        EmployeesCompanion,
+        Child,
+        ChildrenCompanion;
+
 import 'package:flutter/foundation.dart';
 
 @immutable

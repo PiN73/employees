@@ -29,16 +29,20 @@ class DatePickerFormField extends StatelessWidget {
             errorText: state.errorText,
           ),
         ),
-        onTap: () => showDatePicker(
-          context: context,
-          initialDate: initialDate,
-          firstDate: firstDate,
-          lastDate: lastDate,
-        ).then((value) {
-          if (value != null) {
-            state.didChange(value);
-          }
-        }),
+        onTap: () {
+          // remove focus from text field to hide keyboard
+          FocusScope.of(context).unfocus();
+          showDatePicker(
+            context: context,
+            initialDate: state.value ?? initialDate,
+            firstDate: firstDate,
+            lastDate: lastDate,
+          ).then((value) {
+            if (value != null) {
+              state.didChange(value);
+            }
+          });
+        },
       ),
       validator: validator,
       onSaved: onSaved,

@@ -1,4 +1,4 @@
-import 'package:employees/models/user.dart';
+import 'package:employees/data/models.dart';
 import 'package:employees/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:moor_flutter/moor_flutter.dart';
@@ -15,7 +15,7 @@ class Employees extends Table {
   TextColumn get position => text().withLength(min: 1, max: 100)();
 }
 
-@DataClassName("Child")
+@DataClassName('Child')
 class Children extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get lastName => text().withLength(min: 1, max: 20)();

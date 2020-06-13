@@ -1,5 +1,6 @@
-import 'package:employees/data/db.dart';
+import 'package:employees/data/models.dart';
 import 'package:employees/data/repository.dart';
+import 'package:employees/material_utils.dart';
 import 'package:employees/pages/add_child_page.dart';
 import 'package:employees/strings.dart';
 import 'package:employees/utils.dart';
@@ -18,7 +19,7 @@ class EmployeePage extends StatelessWidget {
     return StreamBuilder<Employee>(
       stream: repository.employee(id),
       builder: (context, employeeSnapshot) {
-        return StreamBuilder(
+        return StreamBuilder<List<Child>>(
           stream: repository.employeeChildren(id),
           builder: (context, childrenSnapshot) {
             if (!employeeSnapshot.hasData || !childrenSnapshot.hasData) {
@@ -154,14 +155,11 @@ class _AddChild extends StatelessWidget {
           .push<bool>(
         MaterialPageRoute(
           builder: (context) => AddChildPage(employeeId: data.id),
+          fullscreenDialog: true,
         ),
       ).then((wasSaved) {
         if (wasSaved == true) {
-          Scaffold.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Ребёнок добавлен'),
-            ),
-          );
+          context.showSnack('Ребёнок добавлен');
         }
       }),
     );
