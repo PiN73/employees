@@ -50,6 +50,7 @@ class _AddChildPageState extends State<AddChildPage> {
             }
           },
           child: ListView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: padding),
@@ -57,6 +58,7 @@ class _AddChildPageState extends State<AddChildPage> {
                   decoration: InputDecoration(
                     labelText: 'Фамилия',
                   ),
+                  textCapitalization: TextCapitalization.words,
                   validator: (value) {
                     if (value.isEmpty) return 'Введите фамилию';
                     if (value.length > 20)
@@ -72,6 +74,7 @@ class _AddChildPageState extends State<AddChildPage> {
                   decoration: InputDecoration(
                     labelText: 'Имя',
                   ),
+                  textCapitalization: TextCapitalization.words,
                   validator: (value) {
                     if (value.isEmpty) return 'Введите имя';
                     if (value.length > 20)
@@ -87,6 +90,7 @@ class _AddChildPageState extends State<AddChildPage> {
                   decoration: InputDecoration(
                     labelText: 'Отчество',
                   ),
+                  textCapitalization: TextCapitalization.words,
                   validator: (value) {
                     if (value.isEmpty) return 'Введите отчество';
                     if (value.length > 20)
@@ -114,9 +118,11 @@ class _AddChildPageState extends State<AddChildPage> {
               ),
               Padding(
                 padding: EdgeInsets.all(padding),
-                child: RaisedButton(
-                  child: Text('Сохранить'),
-                  onPressed: () => onSubmitPressed(context),
+                child: Center(
+                  child: RaisedButton(
+                    child: Text('Сохранить'),
+                    onPressed: () => onSubmitPressed(context),
+                  ),
                 ),
               ),
             ],

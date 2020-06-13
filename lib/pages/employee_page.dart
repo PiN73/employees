@@ -89,7 +89,7 @@ class _EmployeePage extends StatelessWidget {
               padding: EdgeInsets.symmetric(
                 horizontal: 16,
               ),
-              child: _AddChild(data: employee),
+              child: Center(child: _AddChild(data: employee)),
             ),
           ),
           SliverToBoxAdapter(
@@ -126,7 +126,7 @@ class _Child extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Theme.of(context).colorScheme.secondaryVariant,
         child: Icon(Icons.person),
         foregroundColor: Colors.white,
       ),
@@ -151,8 +151,7 @@ class _AddChild extends StatelessWidget {
   Widget build(BuildContext context) {
     return RaisedButton(
       child: Text('Добавить ребёнка'),
-      onPressed: () => Navigator.of(context)
-          .push<bool>(
+      onPressed: () => context.push<bool>(
         MaterialPageRoute(
           builder: (context) => AddChildPage(employeeId: data.id),
           fullscreenDialog: true,

@@ -5,6 +5,7 @@ import 'package:employees/pages/add_employee_page.dart';
 import 'package:employees/pages/employee_page.dart';
 import 'package:employees/strings.dart';
 import 'package:employees/utils.dart';
+import 'package:employees/widgets/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,9 +31,16 @@ class EmployeesPage extends StatelessWidget {
                       child: Text('Очистить данные'),
                     ),
                   ],
-                  onSelected: (i) {
-                    context.read<Repository>().clearAll();
-                    context.showSnack('Данные очищены');
+                  onSelected: (i) async {
+                    if (await confirm(
+                      context: context,
+                      content: 'Данные всех сотрудников будут удалены',
+                      trueAction: 'УДАЛИТЬ',
+                      falseAction: 'ОТМЕНА',
+                    ) == true) {
+                      context.read<Repository>().clearAll();
+                      context.showSnack('Данные очищены');
+                    }
                   },
                 ),
               ),
@@ -57,7 +65,7 @@ class _AddEmployeeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       child: Icon(Icons.add),
-      onPressed: () => Navigator.of(context).push<bool>(
+      onPressed: () => context.push<bool>(
         MaterialPageRoute(
           builder: (context) => AddEmployeePage(),
           fullscreenDialog: true,
@@ -84,6 +92,7 @@ class _EmployeesList extends StatelessWidget {
       child: data.isEmpty
           ? _EmployeesEmptyList()
           : ListView.separated(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               itemCount: data.length,
               itemBuilder: (context, i) => _Employee(data: data[i]),
               separatorBuilder: (context, i) => Divider(height: 0, indent: 72),
@@ -169,23 +178,31 @@ class _Employee extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: CircleAvatar(
-        child: Text(data.employee.lastName[0]),
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: 72,
       ),
-      title: Text(
-        data.employee.fullName,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
-      subtitle: Text(
-        subtitleText,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
-      onTap: () => Navigator.of(context).push<void>(
-        MaterialPageRoute(
-          builder: (context) => EmployeePage(id: data.employee.id),
+      child: Center(
+        child: ListTile(
+          leading: CircleAvatar(
+            child: Text(data.employee.lastName[0]),
+            foregroundColor: Colors.black,
+          ),
+          title: Text(
+            data.employee.fullName,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          subtitle: Text(
+            subtitleText,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          onTap: () => context.push<void>(
+            MaterialPageRoute(
+              builder: (context) => EmployeePage(id: data.employee.id),
+            ),
+          ),
         ),
       ),
     );

@@ -8,4 +8,9 @@ extension BuildContextExtensions on BuildContext {
       ),
     );
   }
+
+  Future<T> push<T>(Route<T> route) {
+    Scaffold.of(this, nullOk: true)?.removeCurrentSnackBar();
+    return Navigator.of(this).push(route);
+  }
 }

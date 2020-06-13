@@ -28,7 +28,7 @@ void addDummyData(MyDatabase db) async {
   db.addEmployee(EmployeesCompanion.insert(
     lastName: 'Цветкова',
     firstName: 'Яромириана',
-    middleName: 'Юхимовична',
+    middleName: 'Юхимовна',
     birthDate: DateTime(1994, 8, 30),
     position: 'Кладовщик-комплектовщик',
   ));

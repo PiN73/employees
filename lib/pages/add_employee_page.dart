@@ -47,6 +47,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
             }
           },
           child: ListView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: padding),
@@ -54,6 +55,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                   decoration: InputDecoration(
                     labelText: 'Фамилия',
                   ),
+                  textCapitalization: TextCapitalization.words,
                   validator: (value) {
                     if (value.isEmpty) return 'Введите фамилию';
                     if (value.length > 20)
@@ -69,6 +71,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                   decoration: InputDecoration(
                     labelText: 'Имя',
                   ),
+                  textCapitalization: TextCapitalization.words,
                   validator: (value) {
                     if (value.isEmpty) return 'Введите имя';
                     if (value.length > 20)
@@ -84,6 +87,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                   decoration: InputDecoration(
                     labelText: 'Отчество',
                   ),
+                  textCapitalization: TextCapitalization.words,
                   validator: (value) {
                     if (value.isEmpty) return 'Введите отчество';
                     if (value.length > 20)
@@ -115,6 +119,7 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
                   decoration: InputDecoration(
                     labelText: 'Должность',
                   ),
+                  textCapitalization: TextCapitalization.sentences,
                   validator: (value) {
                     if (value.isEmpty) return 'Введите должность';
                     if (value.length > 100)
@@ -126,9 +131,11 @@ class _AddEmployeePageState extends State<AddEmployeePage> {
               ),
               Padding(
                 padding: EdgeInsets.all(padding),
-                child: RaisedButton(
-                  child: Text('Сохранить'),
-                  onPressed: () => onSubmitPressed(context),
+                child: Center(
+                  child: RaisedButton(
+                    child: Text('Сохранить'),
+                    onPressed: () => onSubmitPressed(context),
+                  ),
                 ),
               ),
             ],

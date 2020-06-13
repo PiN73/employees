@@ -12,12 +12,14 @@ Future<bool> confirm({
       content: Text(content),
       actions: [
         FlatButton(
-          child: Text(trueAction),
-          onPressed: () => Navigator.of(context).pop(true),
+          child: Text(falseAction),
+          textColor: Theme.of(context).colorScheme.primary,
+          onPressed: () => Navigator.of(context).pop(false),
         ),
         FlatButton(
-          child: Text(falseAction),
-          onPressed: () => Navigator.of(context).pop(false),
+          child: Text(trueAction),
+          textColor: Theme.of(context).colorScheme.primary,
+          onPressed: () => Navigator.of(context).pop(true),
         ),
       ],
     ),
@@ -28,7 +30,7 @@ Future<bool> confirmDiscard(BuildContext context) {
   return confirm(
     context: context,
     content: 'Данные не сохранены',
-    trueAction: 'Не сохранять',
-    falseAction: 'Сохранить',
+    trueAction: 'НЕ СОХРАНЯТЬ',
+    falseAction: 'СОХРАНИТЬ',
   );
 }
