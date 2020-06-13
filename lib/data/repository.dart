@@ -1,4 +1,5 @@
 import 'package:employees/data/db.dart';
+import 'package:employees/data/dummy.dart';
 
 class Repository {
   final _db = MyDatabase();
@@ -16,4 +17,6 @@ class Repository {
 
   Future<void> addEmployeeChild(ChildrenCompanion entry) =>
       _db.addChild(entry);
+
+  void addDummy() => addDummyData(_db);
 }

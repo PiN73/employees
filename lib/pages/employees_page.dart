@@ -60,10 +60,25 @@ class _EmployeesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (data.isEmpty) {
-      return Padding(
-        padding: EdgeInsets.all(16),
-        child: Center(
-          child: Text(
+      return _EmployeesEmptyList();
+    }
+    return ListView.separated(
+      itemCount: data.length,
+      itemBuilder: (context, i) => _Employee(data: data[i]),
+      separatorBuilder: (context, i) => Divider(height: 0, indent: 72),
+    );
+  }
+}
+
+class _EmployeesEmptyList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
             'Список сотрудников пуст\nДля добавления нажмите кнопку +',
             style: Theme.of(context).textTheme.subtitle1.copyWith(
               height: 1.5,
@@ -71,13 +86,56 @@ class _EmployeesList extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-        ),
-      );
-    }
-    return ListView.separated(
-      itemCount: data.length,
-      itemBuilder: (context, i) => _Employee(data: data[i]),
-      separatorBuilder: (context, i) => Divider(height: 0, indent: 72),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Divider(
+                  color: Colors.black.withOpacity(.25),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(16),
+                child: Text(
+                  'или',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    height: 1,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Divider(
+                  color: Colors.black.withOpacity(.25),
+                ),
+              ),
+            ],
+          ),
+          _AddDummyButton(),
+        ],
+      ),
+    );
+  }
+}
+
+class _AddDummyButton extends StatefulWidget {
+  @override
+  _AddDummyButtonState createState() => _AddDummyButtonState();
+}
+
+class _AddDummyButtonState extends State<_AddDummyButton> {
+  bool isGenerating = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return RaisedButton(
+      child: Text('Сгенерировать список'),
+      onPressed: isGenerating ? null : () async {
+        setState(() {
+          isGenerating = true;
+        });
+        context.read<Repository>().addDummy();
+      },
     );
   }
 }
