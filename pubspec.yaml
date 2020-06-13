@@ -14,8 +14,6 @@ dependencies:
   intl: ^0.16.1
   moor: ^3.1.0
   moor_flutter: ^3.0.0
-  path_provider: ^1.6.10
-  path: ">=1.6.4 <1.8.0"
 
 dev_dependencies:
   flutter_test:
